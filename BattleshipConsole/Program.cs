@@ -20,7 +20,7 @@ namespace BattleshipConsole
 
             boardGenerator.PlaceListOfShipsOnTheGrid(ships);
 
-            string fieldName = String.Empty;
+            string fieldName;
             while (!game.IsGameOver(ships))
             {
                 board.PrintGrid(board.Grid);
@@ -31,7 +31,7 @@ namespace BattleshipConsole
                 Console.WriteLine($"You: {status} the ship");
             }
             Console.Clear();
-            Console.WriteLine("Game over;");
+            Console.WriteLine("Game over");
             board.PrintGrid(board.Grid);
             Console.ReadKey();
         }

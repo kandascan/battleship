@@ -25,10 +25,8 @@ namespace BattleshipGame
             {
                 for (int j = 0; j < _board.Columns; j++)
                 {
-                    if (_board.Grid[i, j].FieldName == fieldName)
+                    if (_board.Grid[i, j].FieldName == fieldName.ToUpper())
                     {
-
-                        
                         var ship = ships.FirstOrDefault(s => s.Id == _board.Grid[i, j].ShipId);
                         if (ship != null)
                         {
