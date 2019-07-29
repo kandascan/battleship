@@ -8,9 +8,11 @@ namespace BattleshipGame
     {
         public bool IsOccupied { get; set; }
         public Guid ShipId { get; set; }
-        public BoardCoordinates(int x, int y) : base(x, y)
+        public bool ShowShips { get; set; }
+        public BoardCoordinates(int x, int y, bool showShips) : base(x, y)
         {
             IsOccupied = false;
+            ShowShips = showShips;
         }
 
         public char DisplayValue
@@ -20,9 +22,9 @@ namespace BattleshipGame
                 char status;
                 switch (Status)
                 {
-                    //case Status.Occupied:
-                    //    status = '#';
-                    //    break;
+                    case Status.Occupied:
+                        status = ShowShips? '#' : '.';
+                        break;
                     case Status.Sink:
                     case Status.Hit:
                         status = 'X';

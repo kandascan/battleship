@@ -10,12 +10,14 @@ namespace BattleshipGame
         public int Rows;
         public int Columns;
         private char[] ColumnName = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', };
+        private bool ShowShips;
 
-        public Board(int rows, int columns)
+        public Board(int rows, int columns, bool showShips = false)
         {
             Rows = rows+2;
             Columns = columns+2;
             Grid = new BoardCoordinates[Rows, Columns];
+            ShowShips = showShips;
             FillGrid();
         }
 
@@ -46,7 +48,7 @@ namespace BattleshipGame
             {
                 for (int j = 0; j < Columns; j++)
                 {
-                    Grid[i, j] = new BoardCoordinates(i, j);
+                    Grid[i, j] = new BoardCoordinates(i, j, ShowShips);
                 }
             }
         }

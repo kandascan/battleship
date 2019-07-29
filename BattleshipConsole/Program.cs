@@ -9,7 +9,7 @@ namespace BattleshipConsole
         static void Main(string[] args)
         {
             var shipFactory = new ShipFactory();
-            var board = new Board(10, 10);
+            var board = new Board(10, 10); // pass one more parametter bool to display ships on the grid
             var boardGenerator = new RandomBoardGenerator(board);
             var game = new Game(board);
 
