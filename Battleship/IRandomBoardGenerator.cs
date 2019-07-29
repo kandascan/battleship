@@ -9,6 +9,5 @@ namespace BattleshipGame
         int GetEndIndexForShipRandom(Ship ship, ShipOrientation orientation);
         Coordinates GetStartingCoordinatesForShip(Ship ship, ShipOrientation orientation);
         Tuple<ShipOrientation, Coordinates> GenerateOrientationAndCoordinates(Ship ship);
-
     }
 }

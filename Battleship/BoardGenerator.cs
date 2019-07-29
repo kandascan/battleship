@@ -13,7 +13,7 @@ namespace BattleshipGame
             _board = board;
         }
 
-        public void PlaceListOfShipsOnTheGrid(IEnumerable<Ship> ships)
+        public virtual void PlaceListOfShipsOnTheGrid(IEnumerable<Ship> ships)
         {
             foreach (var ship in ships)
             {

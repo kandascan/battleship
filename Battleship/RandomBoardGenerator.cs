@@ -6,17 +6,17 @@ namespace BattleshipGame
 {
     public class RandomBoardGenerator : BoardGenerator, IRandomBoardGenerator
     {
-        private Random RandFirstCoordinateOfShip { get; set; }
-        private Random RandSecondCoordinateOfShip { get; set; }
-        private Random Orientation { get; set; }
-        private Board Board { get; set; }
+        private Random _randFirstCoordinateOfShip { get; set; }
+        private Random _randSecondCoordinateOfShip { get; set; }
+        private Random _orientation { get; set; }
+        private Board _board { get; set; }
 
         public RandomBoardGenerator(Board board) : base(board)
         {
-            RandFirstCoordinateOfShip = new Random();
-            RandSecondCoordinateOfShip = new Random();
-            Orientation = new Random();
-            Board = board;
+            _randFirstCoordinateOfShip = new Random();
+            _randSecondCoordinateOfShip = new Random();
+            _orientation = new Random();
+            _board = board;
         }
 
         public bool CheckIfItPossibleToPlaceAShipOnTheGrid(Ship ship, ShipOrientation orientation, Coordinates coordinates)
@@ -26,9 +26,9 @@ namespace BattleshipGame
                 int x = orientation == ShipOrientation.Vertical ? coordinates.X + i : coordinates.X;
                 int y = orientation == ShipOrientation.Horizontal ? coordinates.Y + i : coordinates.Y;
 
-                if (Board.Grid[x, y].IsOccupied || Board.Grid[x + 1, y].IsOccupied || Board.Grid[x, y + 1].IsOccupied ||
-                    Board.Grid[x + 1, y + 1].IsOccupied || Board.Grid[x - 1, y].IsOccupied || Board.Grid[x, y - 1].IsOccupied ||
-                    Board.Grid[x - 1, y - 1].IsOccupied || Board.Grid[x - 1, y + 1].IsOccupied || Board.Grid[x + 1, y - 1].IsOccupied)
+                if (_board.Grid[x, y].IsOccupied || _board.Grid[x + 1, y].IsOccupied || _board.Grid[x, y + 1].IsOccupied ||
+                    _board.Grid[x + 1, y + 1].IsOccupied || _board.Grid[x - 1, y].IsOccupied || _board.Grid[x, y - 1].IsOccupied ||
+                    _board.Grid[x - 1, y - 1].IsOccupied || _board.Grid[x - 1, y + 1].IsOccupied || _board.Grid[x + 1, y - 1].IsOccupied)
                     return false;
             }
 
@@ -41,9 +41,9 @@ namespace BattleshipGame
             {
                 int x = orientation == ShipOrientation.Vertical ? coordinates.X + i : coordinates.X;
                 int y = orientation == ShipOrientation.Horizontal ? coordinates.Y + i : coordinates.Y;
-                Board.Grid[x, y].IsOccupied = true;
-                Board.Grid[x, y].ShipId = ship.Id;
-                Board.Grid[x, y].Status = Status.Occupied;
+                _board.Grid[x, y].IsOccupied = true;
+                _board.Grid[x, y].ShipId = ship.Id;
+                _board.Grid[x, y].Status = Status.Occupied;
                 ship.CoordinatesFields[i] = new ShipCoordinates(x, y);
             }
         }
@@ -59,9 +59,9 @@ namespace BattleshipGame
         public Coordinates GetStartingCoordinatesForShip(Ship ship, ShipOrientation orientation)
         {
             int endIndex = GetEndIndexForShipRandom(ship, orientation);
-            int firstCoordinate = RandFirstCoordinateOfShip.Next(1, endIndex);
-            int endIndexForSecondCoordinate = orientation == ShipOrientation.Vertical ? Board.Columns - 1 : Board.Rows - 1;
-            int secondCoordinate = RandSecondCoordinateOfShip.Next(1, endIndexForSecondCoordinate);
+            int firstCoordinate = _randFirstCoordinateOfShip.Next(1, endIndex);
+            int endIndexForSecondCoordinate = orientation == ShipOrientation.Vertical ? _board.Columns - 1 : _board.Rows - 1;
+            int secondCoordinate = _randSecondCoordinateOfShip.Next(1, endIndexForSecondCoordinate);
             int x = orientation == ShipOrientation.Vertical ? firstCoordinate : secondCoordinate;
             int y = orientation == ShipOrientation.Horizontal ? firstCoordinate : secondCoordinate;
             var coordinate = new ShipCoordinates(x, y);
@@ -70,12 +70,20 @@ namespace BattleshipGame
 
         public Tuple<ShipOrientation, Coordinates> GenerateOrientationAndCoordinates(Ship ship)
         {
-            var orientation = Orientation.Next(0, 20) % 2 == 0 ? ShipOrientation.Vertical : ShipOrientation.Horizontal;
+            var orientation = _orientation.Next(0, 20) % 2 == 0 ? ShipOrientation.Vertical : ShipOrientation.Horizontal;
             var coordinates = GetStartingCoordinatesForShip(ship, orientation);
             return new Tuple<ShipOrientation, Coordinates>(orientation, coordinates);
         }
 
-        public override void PlaceShipOnTheGrid(Ship ship)
+        public new void PlaceListOfShipsOnTheGrid(IEnumerable<Ship> ships)
+        {
+            foreach (var ship in ships)
+            {
+                PlaceShipOnTheGrid(ship);
+            }
+        }
+
+        public new void PlaceShipOnTheGrid(Ship ship)
         {
             var result = GenerateOrientationAndCoordinates(ship);
             ValidateGeneratiedCoordinatesForPlacingShip(ship, result.Item1, result.Item2);
@@ -87,10 +95,10 @@ namespace BattleshipGame
             switch (orientation)
             {
                 case ShipOrientation.Vertical:
-                    endIndex = Board.Rows - 1 - ship.CoordinatesFields.Count();
+                    endIndex = _board.Rows - 1 - ship.CoordinatesFields.Count();
                     break;
                 case ShipOrientation.Horizontal:
-                    endIndex = Board.Columns - 1 - ship.CoordinatesFields.Count();
+                    endIndex = _board.Columns - 1 - ship.CoordinatesFields.Count();
                     break;
             }
             return endIndex;

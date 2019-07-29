@@ -20,7 +20,7 @@ namespace Tests
         {
             _shipFactory = new ShipFactory();
             _board = new Board(10, 10);
-            _game = new Game(_board);//maybe delete this from constructor
+            _game = new Game(_board);
             _boardGenerator = new RandomBoardGenerator(_board);
         }
 
@@ -32,7 +32,7 @@ namespace Tests
             ships.Add(_shipFactory.MakeShip(ShipType.Destroyer));
             ships.Add(_shipFactory.MakeShip(ShipType.Destroyer));
 
-            (_boardGenerator as RandomBoardGenerator).PlaceListOfShipsOnTheGrid(ships);
+            _boardGenerator.PlaceListOfShipsOnTheGrid(ships);
 
             int cellCounter = 0;
             for (int i = 0; i < _board.Rows; i++)
@@ -85,9 +85,7 @@ namespace Tests
         {
             var ships = CreateShips();
 
-            _boardGenerator = new BoardGenerator(_board);
-            _boardGenerator.PlaceListOfShipsOnTheGrid(ships);
-            // (_boardGenerator as BoardGenerator).PlaceListOfShipsOnTheGrid(ships);
+            (_boardGenerator as BoardGenerator).PlaceListOfShipsOnTheGrid(ships);
 
             var result = _game.ShutShip("B2", ships);
 

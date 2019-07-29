@@ -8,7 +8,6 @@ namespace BattleshipGame
     public abstract class Ship
     {
         public ShipType ShipType { get; set; }
-
         public bool IsSink
         {
             get
@@ -18,7 +17,6 @@ namespace BattleshipGame
         }
         public ShipCoordinates[] CoordinatesFields { get; set; }
         public Guid Id { get; set; }
-
         public Ship(int length)
         {
             Id = Guid.NewGuid();

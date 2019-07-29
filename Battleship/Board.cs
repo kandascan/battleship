@@ -9,22 +9,22 @@ namespace BattleshipGame
         public BoardCoordinates[,] Grid { get; set; }
         public int Rows;
         public int Columns;
-        private char[] ColumnName = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', };
-        private bool ShowShips;
+        private char[] _columnName = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', };
+        private bool _showShips;
 
         public Board(int rows, int columns, bool showShips = false)
         {
             Rows = rows+2;
             Columns = columns+2;
             Grid = new BoardCoordinates[Rows, Columns];
-            ShowShips = showShips;
+            _showShips = showShips;
             FillGrid();
         }
 
         public void PrintGrid(BoardCoordinates [,] grid)
         {
             Console.Write("__|");
-            foreach (var columnName in ColumnName)
+            foreach (var columnName in _columnName)
             {
                 Console.Write($"{columnName} ");
             }
@@ -48,7 +48,7 @@ namespace BattleshipGame
             {
                 for (int j = 0; j < Columns; j++)
                 {
-                    Grid[i, j] = new BoardCoordinates(i, j, ShowShips);
+                    Grid[i, j] = new BoardCoordinates(i, j, _showShips);
                 }
             }
         }

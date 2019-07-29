@@ -6,8 +6,7 @@ namespace BattleshipGame
 {
     public class ShipFactory : IShipFactory
     {
-       private Ship Ship { get; set; }
-
+        private Ship Ship { get; set; }
         public Ship MakeShip(ShipType shipType)
         {
             switch (shipType)
