@@ -15,7 +15,7 @@ namespace BattleshipGame
         {
             X = x;
             Y = y;
-            FieldName = $"{ColumnName[y]}{x+1}";
+            FieldName = $"{ColumnName[y]}{x}";
             Status = Status.Empty;
         }
     }

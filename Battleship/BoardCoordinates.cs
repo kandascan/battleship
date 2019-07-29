@@ -20,10 +20,10 @@ namespace BattleshipGame
                 char status;
                 switch (Status)
                 {
-                    case Status.Sink:
                     case Status.Occupied:
                         status = '#';
                         break;
+                    case Status.Sink:
                     case Status.Hit:
                         status = 'X';
                         break;

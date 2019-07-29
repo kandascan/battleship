@@ -11,7 +11,7 @@ namespace Tests
     public class GameTests
     {
         private IShipFactory _shipFactory;
-        private IBoardGenerator _randomBoardGenerator;
+        private IBoardGenerator _boardGenerator;
         private IGame _game;
         private Board _board;
 
@@ -21,7 +21,7 @@ namespace Tests
             _shipFactory = new ShipFactory();
             _board = new Board(10, 10);
             _game = new Game(_board);//maybe delete this from constructor
-            _randomBoardGenerator = new RandomBoardGenerator(_board);
+            _boardGenerator = new RandomBoardGenerator(_board);
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace Tests
             ships.Add(_shipFactory.MakeShip(ShipType.Destroyer));
             ships.Add(_shipFactory.MakeShip(ShipType.Destroyer));
 
-            _randomBoardGenerator.PlaceListOfShipsOnTheGrid(ships);
+            (_boardGenerator as RandomBoardGenerator).PlaceListOfShipsOnTheGrid(ships);
 
             int cellCounter = 0;
             for (int i = 0; i < _board.Rows; i++)
@@ -60,7 +60,7 @@ namespace Tests
             ships.Add(_shipFactory.MakeShip(ShipType.Destroyer));
             ships.Add(_shipFactory.MakeShip(ShipType.Destroyer));
 
-            _randomBoardGenerator.PlaceListOfShipsOnTheGrid(ships);
+            _boardGenerator.PlaceListOfShipsOnTheGrid(ships);
 
             int cellCounter = 0;
             for (int i = 0; i < _board.Rows; i++)
@@ -85,7 +85,9 @@ namespace Tests
         {
             var ships = CreateShips();
 
-            (_randomBoardGenerator as BoardGenerator).PlaceListOfShipsOnTheGrid(ships);
+            _boardGenerator = new BoardGenerator(_board);
+            _boardGenerator.PlaceListOfShipsOnTheGrid(ships);
+            // (_boardGenerator as BoardGenerator).PlaceListOfShipsOnTheGrid(ships);
 
             var result = _game.ShutShip("B2", ships);
 
@@ -99,7 +101,7 @@ namespace Tests
             ships.Add(_shipFactory.MakeShip(ShipType.Battleship));
             ships.Add(_shipFactory.MakeShip(ShipType.Destroyer));
             ships.Add(_shipFactory.MakeShip(ShipType.Destroyer));
-            int[] column = new int[] { 1, 3, 5 };
+            int[] column = new int[] { 2, 4, 6 };
             int columnIterator = 0;
 
 
@@ -121,12 +123,13 @@ namespace Tests
         {
             var ships = CreateShips();
 
-            (_randomBoardGenerator as BoardGenerator).PlaceListOfShipsOnTheGrid(ships);
+            (_boardGenerator as BoardGenerator).PlaceListOfShipsOnTheGrid(ships);
 
-            var result = _game.ShutShip("B4", ships);
-            result = _game.ShutShip("C4", ships);
-            result = _game.ShutShip("D4", ships);
-            result = _game.ShutShip("E4", ships);
+            var result = Status.Empty;
+            foreach (var coordinates in ships[0].CoordinatesFields)
+            {
+                result = _game.ShutShip(coordinates.FieldName, ships);
+            }
 
             Assert.AreEqual(Status.Sink, result);
 

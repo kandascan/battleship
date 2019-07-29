@@ -43,6 +43,7 @@ namespace BattleshipGame
                 int y = orientation == ShipOrientation.Horizontal ? coordinates.Y + i : coordinates.Y;
                 Board.Grid[x, y].IsOccupied = true;
                 Board.Grid[x, y].ShipId = ship.Id;
+                Board.Grid[x, y].Status = Status.Occupied;
                 ship.CoordinatesFields[i] = new ShipCoordinates(x, y);
             }
         }

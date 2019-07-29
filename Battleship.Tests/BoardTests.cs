@@ -52,8 +52,10 @@ namespace Tests
         [TestCase(ShipType.Destroyer, 4)]
         public void ShouldPlaceShipOnTheGrid(ShipType shipType, int shipLength)
         {
+            var ships = new List<Ship>();
             var ship = _shipFactory.MakeShip(shipType);
-            _boardGenerator.PlaceShipOnTheGrid(ship);
+            ships.Add(ship);
+            _boardGenerator.PlaceListOfShipsOnTheGrid(ships);
 
             int cellCounter = 0;
             for (int i = 0; i < _board.Rows; i++)

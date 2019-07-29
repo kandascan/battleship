@@ -27,8 +27,7 @@ namespace BattleshipGame
                 {
                     if (_board.Grid[i, j].FieldName == fieldName)
                     {
-                        result = Status.Hit;
-                        _board.Grid[i, j].Status = result;
+
                         
                         var ship = ships.FirstOrDefault(s => s.Id == _board.Grid[i, j].ShipId);
                         if (ship != null)
@@ -36,12 +35,15 @@ namespace BattleshipGame
                             var coordinate = ship.CoordinatesFields.FirstOrDefault(c => c.X == i && c.Y == j);
                             if (coordinate != null)
                             {
+                                result = Status.Hit;
+                                coordinate.Status = result;
                                 coordinate.IsHit = true;
                             }
 
                             if (ship.IsSink)
                                 result = Status.Sink;
                         }
+                        _board.Grid[i, j].Status = result;
                     }
                 }
             }
